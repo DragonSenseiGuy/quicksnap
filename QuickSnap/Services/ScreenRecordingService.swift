@@ -160,6 +160,7 @@ class ScreenRecordingService: NSObject, ObservableObject {
         streamOutput = RecordingStreamOutput()
         streamOutput?.assetWriter = assetWriter
         streamOutput?.videoInput = videoInput
+        streamOutput?.adaptor = pixelBufferAdaptor
         streamOutput?.audioInput = audioInput
         
         guard let stream = stream, let streamOutput = streamOutput else {
@@ -192,6 +193,8 @@ class ScreenRecordingService: NSObject, ObservableObject {
         }
     }
     
+    private var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor?
+    
     private func createAssetWriter(width: Int, height: Int, includeAudio: Bool) throws -> URL {
         let fileManager = FileManager.default
         let saveLocation = settings.defaultSaveLocation
@@ -218,13 +221,24 @@ class ScreenRecordingService: NSObject, ObservableObject {
             AVVideoHeightKey: height,
             AVVideoCompressionPropertiesKey: [
                 AVVideoAverageBitRateKey: 10_000_000,
-                AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
+                AVVideoExpectedSourceFrameRateKey: 60,
                 AVVideoMaxKeyFrameIntervalKey: 60
             ]
         ]
         
         videoInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
         videoInput?.expectsMediaDataInRealTime = true
+        
+        let sourcePixelBufferAttributes: [String: Any] = [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
+            kCVPixelBufferWidthKey as String: width,
+            kCVPixelBufferHeightKey as String: height
+        ]
+        
+        pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(
+            assetWriterInput: videoInput!,
+            sourcePixelBufferAttributes: sourcePixelBufferAttributes
+        )
         
         if let videoInput = videoInput, assetWriter?.canAdd(videoInput) == true {
             assetWriter?.add(videoInput)
@@ -270,31 +284,43 @@ class ScreenRecordingService: NSObject, ObservableObject {
 class RecordingStreamOutput: NSObject, SCStreamOutput {
     var assetWriter: AVAssetWriter?
     var videoInput: AVAssetWriterInput?
+    var adaptor: AVAssetWriterInputPixelBufferAdaptor?
     var audioInput: AVAssetWriterInput?
     var isFirstSample = true
+    private let queue = DispatchQueue(label: "com.quicksnap.streamOutput")
     
     func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer, of type: SCStreamOutputType) {
         guard sampleBuffer.isValid else { return }
-        
         guard let assetWriter = assetWriter else { return }
+        guard assetWriter.status == .writing || isFirstSample else { return }
         
-        if isFirstSample {
-            let presentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-            assetWriter.startSession(atSourceTime: presentationTime)
-            isFirstSample = false
-        }
-        
-        switch type {
-        case .screen:
-            guard let videoInput = videoInput, videoInput.isReadyForMoreMediaData else { return }
-            videoInput.append(sampleBuffer)
+        queue.sync {
+            if isFirstSample && type == .screen {
+                let presentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+                assetWriter.startSession(atSourceTime: presentationTime)
+                isFirstSample = false
+            }
             
-        case .audio:
-            guard let audioInput = audioInput, audioInput.isReadyForMoreMediaData else { return }
-            audioInput.append(sampleBuffer)
+            guard !isFirstSample else { return }
             
-        @unknown default:
-            break
+            switch type {
+            case .screen:
+                guard let videoInput = videoInput, videoInput.isReadyForMoreMediaData else { return }
+                if let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+                    let presentationTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+                    adaptor?.append(imageBuffer, withPresentationTime: presentationTime)
+                }
+                
+            case .audio:
+                guard let audioInput = audioInput, audioInput.isReadyForMoreMediaData else { return }
+                audioInput.append(sampleBuffer)
+                
+            case .microphone:
+                break
+                
+            @unknown default:
+                break
+            }
         }
     }
 }

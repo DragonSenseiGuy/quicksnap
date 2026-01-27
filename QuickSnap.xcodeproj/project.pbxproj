@@ -28,6 +28,7 @@
 		B1000025233D000000000013 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000026233D000000000013; };
 		B1000027233D000000000014 /* ToolPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000028233D000000000014; };
 		B1000029233D000000000015 /* EditorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100002A233D000000000015; };
+		B100002B233D000000000016 /* RegionSelectorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100002C233D000000000016; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		B1000026233D000000000013 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		B1000028233D000000000014 /* ToolPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPaletteView.swift; sourceTree = "<group>"; };
 		B100002A233D000000000015 /* EditorWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorWindowController.swift; sourceTree = "<group>"; };
+		B100002C233D000000000016 /* RegionSelectorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionSelectorService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				B1000014233D00000000000A /* PermissionManager.swift */,
 				B1000016233D00000000000B /* DestinationManager.swift */,
 				B1000018233D00000000000C /* NotificationManager.swift */,
+				B100002C233D000000000016 /* RegionSelectorService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				B1000025233D000000000013 /* CanvasView.swift in Sources */,
 				B1000027233D000000000014 /* ToolPaletteView.swift in Sources */,
 				B1000029233D000000000015 /* EditorWindowController.swift in Sources */,
+				B100002B233D000000000016 /* RegionSelectorService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

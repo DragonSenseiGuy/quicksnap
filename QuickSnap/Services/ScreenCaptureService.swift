@@ -1,12 +1,13 @@
 import SwiftUI
 import ScreenCaptureKit
 
+@MainActor
 class ScreenCaptureService: ObservableObject {
     @Published var isCapturing = false
     @Published var isRecording = false
     @Published var lastCaptureResult: CaptureResult?
     
-    private var regionSelectorController: RegionSelectorWindowController?
+    private let regionSelector = RegionSelectorService.shared
     
     func captureFullScreen() {
         isCapturing = true
@@ -35,64 +36,54 @@ class ScreenCaptureService: ObservableObject {
         }
     }
     
-    func captureRegion() {
+    func captureRegion(completion: ((CaptureResult?) -> Void)? = nil) {
         isCapturing = true
         
-        regionSelectorController = RegionSelectorWindowController()
-        regionSelectorController?.onRegionSelected = { [weak self] rect, screen in
-            self?.captureRect(rect, on: screen)
+        regionSelector.selectRegion { [weak self] region in
+            guard let self = self else { return }
+            
+            guard let region = region else {
+                self.isCapturing = false
+                completion?(nil)
+                return
+            }
+            
+            self.captureSelectedRegion(region, completion: completion)
         }
-        regionSelectorController?.onCancelled = { [weak self] in
-            self?.isCapturing = false
-        }
-        regionSelectorController?.showSelector()
     }
     
-    private func captureRect(_ rect: CGRect, on screen: NSScreen) {
-        let screenRect = CGRect(
-            x: screen.frame.origin.x + rect.origin.x,
-            y: screen.frame.origin.y + rect.origin.y,
-            width: rect.width,
-            height: rect.height
-        )
-        
+    private func captureSelectedRegion(_ region: SelectedRegion, completion: ((CaptureResult?) -> Void)? = nil) {
         let image = CGWindowListCreateImage(
-            screenRect,
+            region.screenCaptureRect,
             .optionOnScreenOnly,
             kCGNullWindowID,
             [.bestResolution]
         )
         
         if let cgImage = image {
-            let nsImage = NSImage(cgImage: cgImage, size: rect.size)
-            lastCaptureResult = CaptureResult(
+            let nsImage = NSImage(cgImage: cgImage, size: region.rect.size)
+            let result = CaptureResult(
                 image: nsImage,
                 videoURL: nil,
                 timestamp: Date(),
-                region: rect
+                region: region.rect
             )
+            lastCaptureResult = result
+            isCapturing = false
+            completion?(result)
+        } else {
+            isCapturing = false
+            completion?(nil)
         }
-        
-        isCapturing = false
     }
     
-    func recordFullScreen() {
-        isRecording = true
-        // TODO: Implement full screen recording using ScreenCaptureKit
+    func selectRegion(completion: @escaping (SelectedRegion?) -> Void) {
+        regionSelector.selectRegion(completion: completion)
     }
     
-    func recordRegion() {
-        isRecording = true
-        // TODO: Implement region recording using ScreenCaptureKit
-    }
-    
-    func stopRecording() {
-        isRecording = false
-        // TODO: Stop the recording and save the file
-    }
-    
-    func ocrCapture() {
-        captureRegion()
-        // TODO: After capture, perform OCR on the captured image
+    func ocrCapture(completion: @escaping (NSImage?) -> Void) {
+        captureRegion { result in
+            completion(result?.image)
+        }
     }
 }

@@ -121,7 +121,7 @@ class AppSettings: ObservableObject {
     }
     
     /// The format to use when saving screen recordings.
-    @AppStorage("videoFormat") var videoFormatRaw: String = VideoFormat.mp4.rawValue
+    @AppStorage("videoFormat") var videoFormatRaw: String = VideoFormat.mov.rawValue
     
     /// Computed property to access the video format as an enum.
     var videoFormat: VideoFormat {

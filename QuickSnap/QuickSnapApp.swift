@@ -28,6 +28,7 @@ struct MainMenuBarView: View {
     @ObservedObject var recordingService: ScreenRecordingService
     
     private var settings: AppSettings { AppSettings.shared }
+    private static var preferencesWindow: PreferencesWindowController?
     
     var body: some View {
         Group {
@@ -37,7 +38,7 @@ struct MainMenuBarView: View {
             .keyboardShortcut("3", modifiers: [.command, .shift])
             
             Button("Capture Region...") {
-                captureService.captureRegion()
+                performRegionCapture()
             }
             .keyboardShortcut("4", modifiers: [.command, .shift])
             
@@ -63,7 +64,7 @@ struct MainMenuBarView: View {
             Divider()
             
             Button("OCR Capture...") {
-                captureService.ocrCapture()
+                performOCRCapture()
             }
             .keyboardShortcut("9", modifiers: [.command, .shift])
             .disabled(!settings.enableOCR)
@@ -89,7 +90,10 @@ struct MainMenuBarView: View {
     }
     
     private func openPreferences() {
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        if MainMenuBarView.preferencesWindow == nil {
+            MainMenuBarView.preferencesWindow = PreferencesWindowController(settings: AppSettings.shared)
+        }
+        MainMenuBarView.preferencesWindow?.showWindow()
     }
     
     @MainActor
@@ -112,6 +116,50 @@ struct MainMenuBarView: View {
         }
     }
     
+    private func performRegionCapture() {
+        let settings = self.settings
+        captureService.captureRegion { result in
+            guard let result = result, let image = result.image else { return }
+            
+            if settings.showQuickActions {
+                QuickActionWindowController.show(for: result) { action in
+                    self.handleQuickAction(action, for: result)
+                }
+            } else {
+                DestinationManager.shared.copyImageToClipboard(image)
+                NotificationManager.shared.showCaptureSuccess(message: "Screenshot copied to clipboard")
+            }
+            
+            if settings.playCaptureSound {
+                NotificationManager.shared.playCaptureSound()
+            }
+        }
+    }
+    
+    private func performOCRCapture() {
+        let settings = self.settings
+        captureService.ocrCapture { image in
+            guard let image = image else { return }
+            
+            Task { @MainActor in
+                let ocrService = VisionOCRService()
+                do {
+                    let result = try await ocrService.recognizeText(in: image, languages: [settings.ocrLanguage])
+                    OCRResultWindowController.show(result: result)
+                    if settings.ocrAutoClipboard {
+                        ocrService.copyToClipboard(result.text)
+                    }
+                } catch {
+                    NotificationManager.shared.showError(message: "OCR failed: \(error.localizedDescription)")
+                }
+            }
+            
+            if settings.playCaptureSound {
+                NotificationManager.shared.playCaptureSound()
+            }
+        }
+    }
+    
     private func startFullScreenRecording() async {
         do {
             try await recordingService.startRecordingFullScreen()
@@ -121,19 +169,53 @@ struct MainMenuBarView: View {
     }
     
     private func startRegionRecording() async {
-        do {
-            try await recordingService.startRecordingRegion(CGRect(x: 0, y: 0, width: 800, height: 600))
-        } catch {
-            NotificationManager.shared.showError(message: "Failed to start recording: \(error.localizedDescription)")
+        captureService.selectRegion { [weak recordingService] region in
+            guard let region = region else { return }
+            Task { @MainActor in
+                do {
+                    try await recordingService?.startRecordingRegion(region.screenRecordingSourceRect)
+                } catch {
+                    NotificationManager.shared.showError(message: "Failed to start recording: \(error.localizedDescription)")
+                }
+            }
         }
     }
     
     private func stopRecording() async {
         do {
             let url = try await recordingService.stopRecording()
-            NotificationManager.shared.showCaptureSuccess(message: "Recording saved to \(url.lastPathComponent)")
+            
+            if settings.showQuickActions {
+                RecordingQuickActionWindowController.show(for: url) { action in
+                    handleRecordingQuickAction(action, url: url)
+                }
+            } else {
+                NSWorkspace.shared.activateFileViewerSelecting([url])
+            }
+            
+            if settings.playCaptureSound {
+                NotificationManager.shared.playCaptureSound()
+            }
         } catch {
             NotificationManager.shared.showError(message: "Failed to save recording: \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    private func handleRecordingQuickAction(_ action: RecordingQuickAction, url: URL) {
+        switch action {
+        case .showInFinder:
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        case .openWithQuickTime:
+            NSWorkspace.shared.open(url)
+        case .copyToClipboard:
+            let pasteboard = NSPasteboard.general
+            pasteboard.clearContents()
+            pasteboard.writeObjects([url as NSURL])
+            NotificationManager.shared.showCaptureSuccess(message: "Recording copied to clipboard")
+        case .delete:
+            try? FileManager.default.removeItem(at: url)
+            NotificationManager.shared.showCaptureSuccess(message: "Recording deleted")
         }
     }
     

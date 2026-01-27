@@ -11,25 +11,39 @@ struct MenuBarView: View {
             }
             
             MenuBarButton(title: "Capture Region", shortcut: "⌘⇧4") {
-                captureService.captureRegion()
+                captureService.captureRegion(completion: nil)
             }
             
             Divider()
                 .padding(.vertical, 4)
             
             MenuBarButton(title: "Record Full Screen", shortcut: "⌘⇧5") {
-                captureService.recordFullScreen()
+                NotificationCenter.default.post(name: .triggerFullScreenRecording, object: nil)
             }
             
             MenuBarButton(title: "Record Region", shortcut: "⌘⇧6") {
-                captureService.recordRegion()
+                NotificationCenter.default.post(name: .triggerRegionRecording, object: nil)
             }
             
             Divider()
                 .padding(.vertical, 4)
             
             MenuBarButton(title: "OCR Capture", shortcut: "⌘⇧O") {
-                captureService.ocrCapture()
+                captureService.ocrCapture { image in
+                    guard let image = image else { return }
+                    Task { @MainActor in
+                        let ocrService = VisionOCRService()
+                        do {
+                            let result = try await ocrService.recognizeText(in: image, languages: [settings.ocrLanguage])
+                            OCRResultWindowController.show(result: result)
+                            if settings.ocrAutoClipboard {
+                                ocrService.copyToClipboard(result.text)
+                            }
+                        } catch {
+                            NotificationManager.shared.showError(message: "OCR failed: \(error.localizedDescription)")
+                        }
+                    }
+                }
             }
             
             Divider()
