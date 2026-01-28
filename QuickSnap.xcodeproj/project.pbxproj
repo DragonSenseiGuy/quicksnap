@@ -7,36 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B1000001233D000000000001 /* QuickSnapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002233D000000000001; };
-		B1000003233D000000000002 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000004233D000000000002; };
-		B1000005233D000000000003 /* CaptureMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000006233D000000000003; };
-		B1000007233D000000000004 /* CaptureResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000008233D000000000004; };
-		B1000009233D000000000005 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000A233D000000000005; };
-		B100000B233D000000000006 /* ScreenCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000C233D000000000006; };
-		B100000D233D000000000007 /* ScreenRecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000E233D000000000007; };
-		B100000F233D000000000008 /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010233D000000000008; };
-		B1000011233D000000000009 /* ShortcutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012233D000000000009; };
-		B1000013233D00000000000A /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000014233D00000000000A; };
-		B1000015233D00000000000B /* DestinationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000016233D00000000000B; };
-		B1000017233D00000000000C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000018233D00000000000C; };
-		B1000019233D00000000000D /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100001A233D00000000000D; };
-		B100001B233D00000000000E /* RegionSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100001C233D00000000000E; };
-		B100001D233D00000000000F /* QuickActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100001E233D00000000000F; };
-		B100001F233D000000000010 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000020233D000000000010; };
-		B1000021233D000000000011 /* OCRResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000022233D000000000011; };
-		B1000023233D000000000012 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000024233D000000000012; };
-		B1000025233D000000000013 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000026233D000000000013; };
-		B1000027233D000000000014 /* ToolPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000028233D000000000014; };
-		B1000029233D000000000015 /* EditorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100002A233D000000000015; };
-		B100002B233D000000000016 /* RegionSelectorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100002C233D000000000016; };
+		B1000001233D000000000001 /* QuickSnapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002233D000000000001 /* QuickSnapApp.swift */; };
+		B1000003233D000000000002 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000004233D000000000002 /* Assets.xcassets */; };
+		B1000005233D000000000003 /* CaptureMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000006233D000000000003 /* CaptureMode.swift */; };
+		B1000007233D000000000004 /* CaptureResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000008233D000000000004 /* CaptureResult.swift */; };
+		B1000009233D000000000005 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000A233D000000000005 /* AppSettings.swift */; };
+		B100000B233D000000000006 /* ScreenCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000C233D000000000006 /* ScreenCaptureService.swift */; };
+		B100000D233D000000000007 /* ScreenRecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000E233D000000000007 /* ScreenRecordingService.swift */; };
+		B100000F233D000000000008 /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010233D000000000008 /* VisionOCRService.swift */; };
+		B1000011233D000000000009 /* ShortcutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012233D000000000009 /* ShortcutManager.swift */; };
+		B1000013233D00000000000A /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000014233D00000000000A /* PermissionManager.swift */; };
+		B1000015233D00000000000B /* DestinationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000016233D00000000000B /* DestinationManager.swift */; };
+		B1000017233D00000000000C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000018233D00000000000C /* NotificationManager.swift */; };
+		B1000019233D00000000000D /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100001A233D00000000000D /* MenuBarView.swift */; };
+		B100001B233D00000000000E /* RegionSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100001C233D00000000000E /* RegionSelectorView.swift */; };
+		B100001D233D00000000000F /* QuickActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100001E233D00000000000F /* QuickActionView.swift */; };
+		B100001F233D000000000010 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000020233D000000000010 /* PreferencesView.swift */; };
+		B1000021233D000000000011 /* OCRResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000022233D000000000011 /* OCRResultView.swift */; };
+		B1000023233D000000000012 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000024233D000000000012 /* EditorView.swift */; };
+		B1000025233D000000000013 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000026233D000000000013 /* CanvasView.swift */; };
+		B1000027233D000000000014 /* ToolPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000028233D000000000014 /* ToolPaletteView.swift */; };
+		B1000029233D000000000015 /* EditorWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100002A233D000000000015 /* EditorWindowController.swift */; };
+		B100002B233D000000000016 /* RegionSelectorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100002C233D000000000016 /* RegionSelectorService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B1000002233D000000000001 /* QuickSnapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSnapApp.swift; sourceTree = "<group>"; };
 		B1000004233D000000000002 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B1000030233D000000000016 /* QuickSnap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickSnap.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B1000031233D000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B1000032233D000000000018 /* QuickSnap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickSnap.entitlements; sourceTree = "<group>"; };
 		B1000006233D000000000003 /* CaptureMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureMode.swift; sourceTree = "<group>"; };
 		B1000008233D000000000004 /* CaptureResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureResult.swift; sourceTree = "<group>"; };
 		B100000A233D000000000005 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
@@ -57,6 +54,9 @@
 		B1000028233D000000000014 /* ToolPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPaletteView.swift; sourceTree = "<group>"; };
 		B100002A233D000000000015 /* EditorWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorWindowController.swift; sourceTree = "<group>"; };
 		B100002C233D000000000016 /* RegionSelectorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionSelectorService.swift; sourceTree = "<group>"; };
+		B1000030233D000000000016 /* QuickSnap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickSnap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1000031233D000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1000032233D000000000018 /* QuickSnap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickSnap.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +70,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B1000050233D00000000001A /* Root */ = {
+		B1000050233D00000000001A = {
 			isa = PBXGroup;
 			children = (
 				B1000051233D00000000001B /* QuickSnap */,
@@ -192,7 +192,7 @@
 				en,
 				Base,
 			);
-			mainGroup = B1000050233D00000000001A /* Root */;
+			mainGroup = B1000050233D00000000001A;
 			productRefGroup = B1000052233D00000000001C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -367,10 +367,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = QuickSnap/QuickSnap.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 65KWV62QC2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = QuickSnap/Info.plist;
@@ -394,10 +395,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = QuickSnap/QuickSnap.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 65KWV62QC2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = QuickSnap/Info.plist;

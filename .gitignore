@@ -8,6 +8,7 @@ DerivedData/
 *.ipa
 *.dSYM.zip
 *.dSYM
+QuickSnap.dmg
 
 # Xcode User Data
 xcuserdata/
